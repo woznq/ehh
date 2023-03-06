@@ -12,6 +12,10 @@ public class Polygon {
         this(count,new Style("transparent","black",1));
     }
 
+    public Polygon square(Segment diagonal) {
+
+    }
+
     public void setPoint(int index, Point point) {
         arr[index] = point;
     }
