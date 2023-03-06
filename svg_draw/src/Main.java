@@ -12,6 +12,8 @@ public class Main {
         poly.setPoints(new Point[]{new Point(120,30), new Point(170,180), new Point(240,320), new Point(110,30)});
         System.out.println(poly.toSvg());
 
-
+        SvgScene scene = new SvgScene();
+        scene.add(poly);
+        scene.saveHtml("tmp.html");
     }
 }
