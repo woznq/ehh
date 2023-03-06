@@ -12,8 +12,11 @@ public class Main {
         poly.setPoints(new Point[]{new Point(120,30), new Point(170,180), new Point(240,320), new Point(110,30)});
         System.out.println(poly.toSvg());
 
+        Ellipse ellipse = new Ellipse(new Point(100, 50), 20, 30, new Style("blue", "yellow", 1));
+
         SvgScene scene = new SvgScene();
         scene.add(poly);
+        scene.add(ellipse);
         scene.saveHtml("tmp.html");
     }
 }

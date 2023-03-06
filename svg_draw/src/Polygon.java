@@ -23,6 +23,7 @@ public class Polygon extends Shape {
         arr = points;
     }
 
+    @Override
     public String toSvg() {
         String pointsString = "";
         for(Point point : arr)
