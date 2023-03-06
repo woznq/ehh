@@ -52,6 +52,6 @@ public class Segment
     }
 
     public static Segment[] perpendicular(Segment line, Point point) {
-        perpendicular(line, point, line.distance());
+        return perpendicular(line, point, line.distance());
     }
 }

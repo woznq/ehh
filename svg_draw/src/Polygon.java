@@ -1,20 +1,19 @@
 import java.util.Locale;
 
-public class Polygon {
+public class Polygon extends Shape {
     private Point[] arr;
-    private Style style;
 
     public Polygon(int count,Style style) {
+        super(style);
         arr = new Point[count];
-        this.style = style;
     }
     public Polygon(int count) {
         this(count,new Style("transparent","black",1));
     }
 
-    public Polygon square(Segment diagonal) {
+    //public Polygon square(Segment diagonal) {
 
-    }
+    //}
 
     public void setPoint(int index, Point point) {
         arr[index] = point;

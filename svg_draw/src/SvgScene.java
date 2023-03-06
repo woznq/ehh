@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SvgScene {
-    private List<Polygon> shapes = new ArrayList<>();
-    public void add(Polygon polygon){
+    private List<Shape> shapes = new ArrayList<>();
+    public void add(Shape polygon){
         shapes.add(polygon);
     }
     public void saveHtml(String path){
