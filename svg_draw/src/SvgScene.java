@@ -19,9 +19,6 @@ public class SvgScene {
                     "\n" +
                     "</body>\n" +
                     "</html>");
-//            for(int i =0;i<shapes.size();++i){
-//                shapes.get(i);
-//            }
             fw.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
