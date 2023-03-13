@@ -6,6 +6,7 @@ public class Main {
         poly=new SolidFillShapeDecorator(poly,"green");
         Shape ellipse = new Ellipse(new Vec2(300,400),200,50);
         ellipse = new SolidFillShapeDecorator(ellipse,"yellow");
+        ellipse = new StrokeShapeDecorator(ellipse,"purple",21 );
         SvgScene scene=new SvgScene();
         scene.add(poly);
         scene.add(ellipse);
