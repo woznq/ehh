@@ -7,6 +7,13 @@ public class Main {
         Shape ellipse = new Ellipse(new Vec2(300,400),200,50);
         ellipse = new SolidFillShapeDecorator(ellipse,"yellow");
         ellipse = new StrokeShapeDecorator(ellipse,"purple",21 );
+
+        ellipse = new TransformationDecorator.Builder()
+                .shape(ellipse)
+                .rotate(new Vec2(300,400),90)
+                .build();
+
+
         SvgScene scene=new SvgScene();
         scene.add(poly);
         scene.add(ellipse);
