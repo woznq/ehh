@@ -2,8 +2,8 @@ import java.util.Locale;
 
 public class Style {
 
-    private final String fillColor, strokeColor;
-    private final double strokeWidth;
+    public final String fillColor, strokeColor;
+    public final double strokeWidth;
     public Style(String fillColor, String strokeColor, double strokeWidth) {
         this.fillColor = fillColor;
         this.strokeColor = strokeColor;
