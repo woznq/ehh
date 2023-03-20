@@ -5,15 +5,13 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 public class Person implements Serializable {
     private String name;
     private LocalDate birth, death;
     private Person parents[] = new Person[2];
+    private static List<String> names = new ArrayList<>();
 
     public Person(String name, LocalDate birth) {
         this(name, birth, null);
@@ -64,7 +62,7 @@ public class Person implements Serializable {
             }
         }
     }
-    public static Person loadPerson(String filePath) throws FileNotFoundException{
+    public static Person loadPerson(String filePath) throws FileNotFoundException, AmbigiousPersonException {
         File file = new File(filePath);
         Scanner s = new Scanner(file);
         String name = s.nextLine();
@@ -76,6 +74,14 @@ public class Person implements Serializable {
                 death = LocalDate.parse(deathText, DateTimeFormatter.ofPattern("dd.MM.uuuu"));
             }
         }
+
+        for(var i: names){
+            if(i.compareTo(name) == 0){
+                throw new AmbigiousPersonException(name);
+            }
+        }
+        names.add(name);
+
         return new Person(name, birth, death);
     }
 }

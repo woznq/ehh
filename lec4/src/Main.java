@@ -85,6 +85,8 @@ public class Main {
 
         } catch (FileNotFoundException e){
             e.printStackTrace();
+        } catch (AmbigiousPersonException e) {
+            e.printStackTrace();
         }
 
 
