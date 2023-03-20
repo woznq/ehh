@@ -11,7 +11,7 @@ public class Person implements Serializable {
     private String name;
     private LocalDate birth, death;
     private Person parents[] = new Person[2];
-    private static List<String> names = new ArrayList<>();
+    private static List<TemporaryPerson> temporaryPeople = new ArrayList<>();
 
     public Person(String name, LocalDate birth) {
         this(name, birth, null);
@@ -75,13 +75,15 @@ public class Person implements Serializable {
             }
         }
 
-        for(var i: names){
-            if(i.compareTo(name) == 0){
-                throw new AmbigiousPersonException(name);
+        for(var i: temporaryPeople){
+            if(i.person.name.compareTo(name) == 0){
+                throw new AmbigiousPersonException(name, filePath, i.path);
             }
         }
-        names.add(name);
+        Person result = new Person(name, birth, death);
 
-        return new Person(name, birth, death);
+        temporaryPeople.add(new TemporaryPerson(result, filePath));
+
+        return result;
     }
 }

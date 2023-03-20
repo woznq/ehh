@@ -87,6 +87,7 @@ public class Main {
             e.printStackTrace();
         } catch (AmbigiousPersonException e) {
             e.printStackTrace();
+            System.err.println(e.path1 + " " + e.path2);
         }
 
 
