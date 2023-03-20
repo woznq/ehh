@@ -73,13 +73,21 @@ public class Main {
     }
 
     public static void main(String[] args){
-        String filePath = "test/test_same_osoby/Alicja Stefanek.txt";
         try {
-            Person person = Person.loadPerson(filePath);
-            System.out.println(person.toString());
+            Person p1 = Person.loadPerson("test/test_same_osoby/Alicja Stefanek.txt");
+            Person p2 = Person.loadPerson("test/test_same_osoby/Joanna Nowak.txt");
+            Person p3 = Person.loadPerson("test/test_same_osoby/abc.txt");
+
+
+            System.out.println(p1.toString());
+
+
+
         } catch (FileNotFoundException e){
             e.printStackTrace();
         }
+
+
         //save("people.bin");
 
         //load("people.bin");

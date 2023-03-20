@@ -69,10 +69,12 @@ public class Person implements Serializable {
         Scanner s = new Scanner(file);
         String name = s.nextLine();
         LocalDate birth = LocalDate.parse(s.nextLine(), DateTimeFormatter.ofPattern("dd.MM.uuuu"));
-        String deathText = s.nextLine();
         LocalDate death = null;
-        if (deathText !="") {
-            death = LocalDate.parse(deathText, DateTimeFormatter.ofPattern("dd.MM.uuuu"));
+        if(s.hasNextLine()){
+            String deathText = s.nextLine();
+            if (deathText !="") {
+                death = LocalDate.parse(deathText, DateTimeFormatter.ofPattern("dd.MM.uuuu"));
+            }
         }
         return new Person(name, birth, death);
     }
