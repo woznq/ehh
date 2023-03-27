@@ -3,8 +3,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class FileCommander {
     private Path path;
@@ -38,5 +38,23 @@ public class FileCommander {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+
+
     }
+
+    public List<String> find(String substring){
+
+
+        try {
+            return Files.walk(path)
+//                    .map(o->o.getFileName())
+                    .filter(o->o.getFileName().toString().contains(substring))
+                    .map(Path::toString)
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
