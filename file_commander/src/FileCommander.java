@@ -1,10 +1,10 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FileCommander {
     private Path path;
@@ -15,46 +15,69 @@ public class FileCommander {
     public String pwd(){
         return path.toString();
     }
-    public void cd(Path path){
-        this.path = this.path.resolve(path).normalize();
+    public void cd(String path){
+        this.path=this.path.resolve(path).normalize();
     }
 
-    public List<String> ls(){
-        Comparator<Path> comparator = (path2,path1)-> Boolean.compare(Files.isDirectory(path1),Files.isDirectory(path2));
-        comparator = comparator.thenComparing(Path::getFileName);
-        try {
-            return Files.list(path)
-                    //.map(Path::getFileName)
-                    .sorted(comparator)
-                    .map(o->{
-                        if (Files.isDirectory(o)) {
-                            return "["+o.getFileName().toString()+"]";
+    public static String formatDirBraces(String text) {
+        return "[" + text + "]";
+    }
+
+    public static String formatDirColor(String text) {
+        return ConsoleColors.BLUE + text + ConsoleColors.RESET;
+    }
+
+    public static String formatFiltered(String text, String substring) {
+        int begin = text.indexOf(substring);
+        int end = begin + substring.length();
+
+        String endMarker = text.startsWith(ConsoleColors.BLUE) ? ConsoleColors.BLUE : ConsoleColors.RESET;
+
+        String result="";
+
+        result += text.substring(0, begin);
+        result+=ConsoleColors.RED_BOLD;
+        result += text.substring(begin, end);
+        result+=endMarker;
+        result += text.substring(end);
+
+        return result;
+    }
+
+    public List<String> ls(Function<String, String> formatDir, String substring){
+        Comparator<Path> c = (p1, p2) ->
+                Boolean.compare(Files.isDirectory(p2),Files.isDirectory(p1));
+        c = c.thenComparing(p -> p.getFileName().toString());
+
+        boolean isFiltered = substring!=null;
+
+        try (Stream<Path> stream = Files.list(path)) {
+            return stream
+                    .filter(isFiltered ? currentPath -> currentPath.getFileName().toString().contains(substring) : currentPath -> true)
+                    .sorted(c)
+                    .map(path -> {
+                        String spath = path.getFileName().toString();
+                        if(Files.isDirectory(path)) {
+                            return formatDir.apply(spath);
                         }
-                        return o.getFileName().toString();
+                        else return spath;
                     })
+                    .map(isFiltered ? spath -> formatFiltered(spath, substring) : spath -> spath)
                     .collect(Collectors.toList());
-
-
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return new ArrayList<>();
         }
-
-
-
     }
-
-    public List<String> find(String substring){
-
-
-        try {
-            return Files.walk(path)
-//                    .map(o->o.getFileName())
-                    .filter(o->o.getFileName().toString().contains(substring))
+    //Zadanie 3
+    public List<String> find(String s) {
+        try(Stream<Path> stream = Files.walk(path)){
+            return stream.filter(currentPath -> currentPath.getFileName().toString().contains(s))
                     .map(Path::toString)
                     .collect(Collectors.toList());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        }catch (IOException e){
+            e.printStackTrace();
         }
+        return Collections.emptyList();
     }
 
 }

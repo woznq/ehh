@@ -1,37 +1,64 @@
 import java.io.*;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 public class FileCommanderCLI {
-    private FileCommander fileCommander;
     private BufferedReader reader;
     private BufferedWriter writer;
-    public FileCommanderCLI(InputStream in, PrintStream out){
-        fileCommander = new FileCommander();
-        reader = new BufferedReader(new InputStreamReader(in));
-        writer = new BufferedWriter(new OutputStreamWriter(out));
+    private FileCommander fileCommander;
+    private BufferedOutputStream outputStream;
+
+    public FileCommanderCLI(InputStream in, OutputStream out){
+        this.reader = new BufferedReader(new InputStreamReader(in));
+        this.writer = new BufferedWriter(new OutputStreamWriter(out));
+        this.outputStream = new BufferedOutputStream(outputStream);
+        this.fileCommander = new FileCommander();
     }
 
     public void eventLoop(){
-        while(true) {
-            try {
+        while(true){
+            try{
                 String line = reader.readLine();
                 runCommand(line);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                writer.flush();
+            }catch(IOException e){
+                e.printStackTrace();
             }
         }
     }
 
-    private void runCommand(String line){
-        String[] params = line.split(" ");
-        if(params.length == 0)
-            return;
-        switch (params[0]) {
-            case "ls" -> System.out.println(fileCommander.ls());
-            case "pwd" -> System.out.println(fileCommander.pwd());
-            case "cd" -> fileCommander.cd(Path.of(params[1]));
-        }
+    public void runCommand(String command)throws IOException{
+        String commandArr[]=command.split(" ");
 
+
+        switch (commandArr[0]) {
+            case "pwd" -> writer.write(fileCommander.pwd() + "\n");
+            case "cd" -> fileCommander.cd(commandArr[1]);
+            case "ls" -> writer.write(runLs(Arrays.copyOfRange(commandArr,1, commandArr.length)) + "\n");
+            case "find" -> writer.write(fileCommander.find(commandArr[1]).toString()+ "\n");
+            default -> writer.write("Unknown command\n");
+        }
     }
+
+    private final String filterPrefix = "--filter=";
+    public String runLs(String[] parameters) {
+        Optional<String> filterParameter = Arrays.stream(parameters)
+                .filter(entry -> entry.startsWith(filterPrefix))
+                .findFirst();
+
+        String substring = filterParameter.isPresent() ? filterParameter.get().substring(filterPrefix.length()) : null;
+
+
+        Function<String, String> dirFormatFunction;
+        if(Arrays.stream(parameters).anyMatch(entry -> entry.equals("--color")))
+            dirFormatFunction = FileCommander::formatDirColor;
+        else
+            dirFormatFunction = FileCommander::formatDirBraces;
+
+        return fileCommander.ls(dirFormatFunction, substring).toString();
+    }
+
 }
