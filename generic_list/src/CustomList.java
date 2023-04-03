@@ -10,19 +10,31 @@ public class CustomList <T>{
     private Node head=null, tail=null;
 
     public void addLast(T value){
+        Node node = new Node(value, null);
         if(head==null){
-            Node node = new Node(value, null);
-            tail = node;
             head = node;
         }else if(head==tail){
-            Node node = new Node(value, null);
             head.next = node;
-            tail = node;
         }else {
-            Node node = new Node(value, null);
             tail.next = node;
+        }
+        tail = node;
+    }
+
+    public void addFirst(T value){
+        Node node = new Node(value, null);
+        if(head == null){
+            head = node;
             tail = node;
         }
+        else{
+            node.next = head;
+            head = node;
+        }
+    }
+
+    public T getFirst(){
+        return head.value;
     }
     public T getLast(){
         return tail.value;
