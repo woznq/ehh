@@ -3,9 +3,15 @@ public class Main {
         CustomList<String> list = new CustomList<>();
         list.addLast("def");
         list.addLast("ghi");
-        System.out.println(list.removeFirst());
-        System.out.println(list.getFirst());
-//        list.addFirst("zxc");
-//        System.out.println(list.getFirst());
+        list.addLast("jkl");
+//        System.out.println(list.size());
+//        System.out.println(list.get(1));
+//        System.out.println(list.get(2));
+//        System.out.println(list.get(60));
+        for (var value : list)
+            System.out.println(value);
+        list.stream()
+                .map(o -> o + "_")
+                .forEach(System.out::println);
     }
 }
