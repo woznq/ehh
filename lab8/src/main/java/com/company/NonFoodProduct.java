@@ -20,8 +20,8 @@ public class NonFoodProduct extends Product {
         try {
             Scanner scanner = new Scanner(path);
             name = scanner.nextLine();
-
             scanner.nextLine();
+
             prices = Arrays.stream(scanner.nextLine().split(";"))
                     .map(value -> value.replace(",","."))
                     .map(Double::valueOf)
