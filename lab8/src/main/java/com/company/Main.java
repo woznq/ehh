@@ -8,8 +8,8 @@ public class Main {
         Product.addProducts(NonFoodProduct::fromCsv, Path.of("data/nonfood"));
 
         try {
-//            Product p1 = Product.getProduct("Buraki");
-//            System.out.println(p1.getPrice(2012, 5));
+            Product p1 = Product.getProduct("Buraki");
+            System.out.println(p1.getPrice(2012, 5));
 
             //Product p2 = Product.getProduct("Mięso"); // <- rzuca wyjątek AmbigiousProductException
             //Product p3 = Product.getProduct("Komputer"); // <- rzuca wyjątek IndexOutOfBoundsException

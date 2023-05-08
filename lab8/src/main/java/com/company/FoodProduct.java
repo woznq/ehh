@@ -7,7 +7,7 @@ import java.util.*;
 public class FoodProduct extends Product {
     Map<String, Double[]> prices;
 
-    private FoodProduct(String name,  Map<String, Double[]> prices) {
+    protected FoodProduct(String name,  Map<String, Double[]> prices) {
         super(name);
         this.prices = prices;
     }
