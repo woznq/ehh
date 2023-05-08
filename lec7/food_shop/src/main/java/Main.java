@@ -2,37 +2,40 @@ import pl.umcs.oop.lec7.auth.AccountManager;
 import pl.umcs.oop.lec7.shop.Account;
 import pl.umcs.oop.lec7.shop.Cart;
 import pl.umcs.oop.lec7.shop.Product;
+import pl.umcs.oop.lec7.shop.Warehouse;
 
+import java.util.List;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 
 public class Main {
-    public static Account login(AccountManager accountManager, String name, String password) {
-        if(accountManager.login("alice", "secret"))
-            return new Account("alice");
-        else
-            throw new RuntimeException("Wrong credentials");
-    }
+    public static void main(String[] args) throws SQLException {
+        DatabaseConnection connection = new DatabaseConnection();
+        connection.connect("shop.db");
+        AccountManager accountManager = new AccountManager(connection);
 
-    public static void main(String[] args) {
-        AccountManager manager = new AccountManager();
-        manager.register("alice", "secret");
-        Account alice = login(manager, "alice", "secret");
+        //accountManager.register("alice", "secret");
+        System.out.println(accountManager.login("alice", "secret"));
 
-        //Cart<FoodProduct> cart = alice.createCart();
-        FoodCart cart = new FoodCart(alice);
+        Warehouse warehouse = new Warehouse(connection);
+        //warehouse.addProduct(1, 5);
+        //warehouse.addProduct(2, 10);
 
-        FoodProduct bread = new FoodProduct("bread",
-                new BigDecimal(5), 250);
-        FoodProduct butter = new FoodProduct("butter",
-                new BigDecimal(8), 700);
+        Account account = new Account("alice");
+        Cart cart = new Cart(account, warehouse);
 
-        Product box = new Product("box",
-                new BigDecimal(8));
+        List<Warehouse.ProductAmount> productList;
+        productList = warehouse.findProduct("ziem");
+        if(!productList.isEmpty()) {
+            cart.add(productList.get(0).product());
+            cart.add(productList.get(0).product());
+        }
+        productList = warehouse.findProduct("bur");
+        if(!productList.isEmpty()) {
+            cart.add(productList.get(0).product());
+        }
 
-        cart.add(bread);
-        cart.add(butter);
-        //cart.add(box);
-
-        System.out.println(cart.value());
+        System.out.println(cart.buy());
+        connection.disconnect();
     }
 }

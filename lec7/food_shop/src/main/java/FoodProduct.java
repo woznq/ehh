@@ -10,7 +10,7 @@ public class FoodProduct extends Product {
     private Integer energy;
 
     public FoodProduct(String name, BigDecimal price, Integer energy) {
-        super(name, price);
+        super(0, name, price);
         this.energy = energy;
     }
 }

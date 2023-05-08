@@ -11,7 +11,4 @@ public class Account {
         return name;
     }
 
-    public <T extends Product> Cart<T> createCart() {
-        return new Cart(this);
-    }
 }
