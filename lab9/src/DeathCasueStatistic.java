@@ -1,13 +1,11 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collector;
 
 public class DeathCasueStatistic {
+    Map<Integer, Integer> ageBrackets;
 
     public DeathCasueStatistic(String diseaseCode, Integer[] deathCount) {
         this.diseaseCode = diseaseCode;
@@ -58,5 +56,44 @@ public class DeathCasueStatistic {
             throw new RuntimeException(e);
         }
 
+    }
+    public void create(){
+        ageBrackets = new HashMap<>();
+        for (int i =0;i<100;i+=5){
+            ageBrackets.put(i,i+4);
+        }
+        System.out.println(ageBrackets);
+    }
+    public AgeBracketDeaths checkAge(int age){
+        int young=0, old=0, deathCount=0;
+        create();
+        for (int minAge : ageBrackets.keySet()){
+            if (minAge>age) continue;
+            if (ageBrackets.get(minAge)<age) continue;
+            young = minAge;
+            old = ageBrackets.get(minAge);
+            deathCount = age;
+            break;
+        }
+        return new AgeBracketDeaths(young, old, deathCount);
+    }
+
+    public static class AgeBracketDeaths{
+        int young=0, old=0, deathCount=0;
+
+        public AgeBracketDeaths(int young, int old, int deathCount){
+            this.deathCount = deathCount;
+            this.young = young;
+            this.old = old;
+        }
+
+        @Override
+        public String toString() {
+            return "AgeBracketDeaths{" +
+                    "young=" + young +
+                    ", old=" + old +
+                    ", deathCount=" + deathCount +
+                    '}';
+        }
     }
 }
